@@ -47,10 +47,38 @@ namespace Entity_learning.Controllers
         {
             try
             {
-                // Get by Id
                 var category = await _categoryRepository.GetAsync(new CategorySpec(id, name));
-
                 return Ok(category.FirstOrDefault());
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        //// GET api/<CategoryController>/5
+        [HttpGet("GetCategoryUsinglistSpec")]
+        public async Task<IActionResult> GetCategoryUsingListSpec([FromQuery] int? id, [FromQuery] string? name)
+        {
+            try
+            {
+                var specs = new List<ISpecification<Category>>();
+
+                if (id > 0)
+                {
+                    specs.Add(new CategoryByIdSpec(id.Value));
+                }
+
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    specs.Add(new CategoryByNameSpec(name));
+                }
+
+                var categories = await _categoryRepository.GetAsync(specs.ToArray());
+
+
+                return Ok(categories.FirstOrDefault());
             }
             catch
             {

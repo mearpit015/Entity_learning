@@ -13,6 +13,8 @@ namespace Entity_learning.Repositories.Interface
 
         Task<IEnumerable<Category>> GetAsync(ISpecification<Category>? spec = null);
 
+        Task<IEnumerable<Category>> GetAsync(params ISpecification<Category>[] specs);
+
         Task<bool> DeleteAsync (int categoryId);
     }
 }

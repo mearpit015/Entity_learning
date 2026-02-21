@@ -82,6 +82,17 @@ namespace Entity_learning.Repositories
             }
         }
 
+        public async Task<IEnumerable<Category>> GetAsync(params ISpecification<Category>[] specs)
+        {
+            IQueryable<Category> query = _context.Categories;
+
+            foreach (var spec in specs)
+            {
+                query = spec.Apply(query);
+            }
+
+            return await query.ToListAsync();
+        }
         public async Task<bool> UpdateAsync(int id, CategoryRequest request)
         {
             try
